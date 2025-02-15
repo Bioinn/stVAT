@@ -8,7 +8,7 @@
 - anndata==0.10.9  
 - numpy==2.0
 
-## Dataset
+## Datasets
 - [STOMICS DataBase - PDAC](https://db.cngb.org/stomics/search?query=PDAC)  
 - [Spatial Research - DOI: 10.1158/0008-5472.CAN-18-0747](https://www.spatialresearch.org/resources-published-datasets/doi-10-1158-0008-5472-can-18-0747/)  
 - [10x Genomics - Human Breast Cancer (Block A Section 1)](https://www.10xgenomics.com/datasets/human-breast-cancer-block-a-section-1-1-standard-1-1-0)  
