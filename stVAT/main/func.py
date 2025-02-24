@@ -70,7 +70,6 @@ def get_not_in_tissue_coords(coords, img_xy):
     return not_in_tissue_coords, np.array(not_in_tissue_index)
 
 def get_ST_position_info(integral_coords):
-    # 保留原点或者原点之间的点（这个两点之间也可以是斜边）
     integral_coords = np.array(integral_coords)
     delta_x = 1
     delta_y = 1
@@ -199,7 +198,7 @@ def get_10X_position_info(integral_coords):
 def get_train_data(train_counts, train_coords):
     train_counts = np.array(train_counts)
     train_coords = np.array(train_coords)
-    # 坐标从0开始
+
     train_coords[:, 0] = train_coords[:, 0] - min(train_coords[:, 0])
     train_coords[:, 1] = train_coords[:, 1] - min(train_coords[:, 1])
     delta_x = 1
@@ -219,7 +218,7 @@ def get_train_data(train_counts, train_coords):
     lr_x, lr_y = np.mgrid[0:max(train_coords[:, 0]):2 * delta_x,
                  0:max(train_coords[:, 1]):2 * delta_y]
     # The subsampled coordinate system is typed into the list
-    lr_xy = [list(i) for i in list(np.vstack((lr_x.reshape(-1), lr_y.reshape(-1))).T)]  # 列表 [[x,y], ***, [x,y]]
+    lr_xy = [list(i) for i in list(np.vstack((lr_x.reshape(-1), lr_y.reshape(-1))).T)]  
 
     for i in range(train_coords.shape[0]):
         if list(train_coords[i]) in lr_xy:
@@ -322,14 +321,12 @@ def getSTtestset(test_counts, test_coords):
     delta_x = 1
     delta_y = 1
 
-    # 真实坐标值，可以与索引不同，这里是相同的，在下采样时是可以不同的
-    # 是整个平面的所有坐标值，不是spot的
     test_input_x, test_input_y = np.mgrid[min(test_coords[:, 0]):max(test_coords[:, 0]) + delta_x:delta_x,
                                  min(test_coords[:, 1]):max(test_coords[:, 1]) + delta_y:delta_y]
 
     # Get the coordinates of missing values on input images.
     not_in_tissue_coords, not_in_tissue_xy = get_not_in_tissue_coords(test_coords, (test_input_x, test_input_y))
-    not_in_tissue_x = not_in_tissue_xy.T[0]  # 索引 0.1.2...
+    not_in_tissue_x = not_in_tissue_xy.T[0]  
     not_in_tissue_y = not_in_tissue_xy.T[1]
 
     # Get testing set.
@@ -355,7 +352,7 @@ def get10Xtestset(test_counts, test_coords):
 
     test_input_x, test_input_y = np.mgrid[x_min:max(test_coords[:, 0]) + delta_x:delta_x,
                                  y_min:max(test_coords[:, 1]) + delta_y:delta_y]
-    # 相邻的列错峰取值
+
     for i in range(1, test_input_y.shape[0], 2):
         test_input_y[i] = test_input_y[i] + delta_y / 2
 
@@ -386,7 +383,7 @@ def get_down_ST(train_counts, train_coords):
     lr_x, lr_y = np.mgrid[0:max(train_coords[:, 0])+1:2 * delta_x,
                  0:max(train_coords[:, 1])+1:2 * delta_y]
 
-    lr_xy = [list(i) for i in list(np.vstack((lr_x.reshape(-1), lr_y.reshape(-1))).T)]  # 列表 [[x,y], ***, [x,y]]
+    lr_xy = [list(i) for i in list(np.vstack((lr_x.reshape(-1), lr_y.reshape(-1))).T)]  
 
     for i in range(train_coords.shape[0]):
         if list(train_coords[i]) in lr_xy:
@@ -430,7 +427,7 @@ def get_down_10x(train_counts, train_coords):
     lr_x, lr_y = np.mgrid[0:max(train_coords[:, 0]) + delta_x:2 * delta_x,
                  0:max(train_coords[:, 1]):2 * delta_y]
 
-    # 判断下采样后的坐标哪些是spot
+    
     lr_spot_index = []
     lr_xy = [list(i) for i in list(np.vstack((lr_x.reshape(-1), lr_y.reshape(-1))).T)]
     for i in range(train_coords.shape[0]):
@@ -439,7 +436,7 @@ def get_down_10x(train_counts, train_coords):
     lr_counts = train_counts[lr_spot_index]
     lr_coords = train_coords[lr_spot_index]
 
-    # 索引 0.1.2...
+    
     lr_not_in_tissue_coords, lr_not_in_tissue_xy = get_not_in_tissue_coords(lr_coords, (lr_x, lr_y))
     lr_not_in_tissue_x = lr_not_in_tissue_xy.T[0]
     lr_not_in_tissue_y = lr_not_in_tissue_xy.T[1]
@@ -454,7 +451,7 @@ def get_down_10x(train_counts, train_coords):
     hr_x, hr_y = np.mgrid[0:max(train_coords[:, 0]) + delta_x:delta_x,
                  0:max(train_coords[:, 1]):delta_y]
 
-    # 让相邻的行错峰取值，可以取到全部点
+    
     for i in range(1, hr_y.shape[0], 2):
         hr_y[i] = hr_y[i] + delta_y / 2
 
@@ -536,26 +533,25 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def plot_genes(adata, show_genes, n, size, point_size, titles=None, cmap="viridis"):
-    # 获取基因索引
     genes_index = [list(adata.var_names).index(gene) for gene in show_genes]
     
-    # 创建绘图
+    
     fig, axs = plt.subplots(1, n, figsize=size)
     
     for flag in range(n):
         gene_index = genes_index[flag]
         
-        # 如果 adata.X 是稀疏矩阵，使用稀疏矩阵的索引方式
+        
         if isinstance(adata.X, np.ndarray):
             gene_expression = adata.X[:, gene_index]
         else:
-            gene_expression = adata.X[:, gene_index].toarray().flatten()  # 转换为密集数组
+            gene_expression = adata.X[:, gene_index].toarray().flatten() 
         
-        # 绘制散点图
+        
         axs[flag].scatter(adata.obs['array_row'], adata.obs['array_col'],
                           c=gene_expression, marker='s', s=point_size, vmin=0, cmap=cmap)
         
-        # 设置标题
+        
         axs[flag].set_title(titles[flag] if titles else show_genes[flag])
         axs[flag].set_xticks([])
         axs[flag].set_yticks([])

@@ -7,11 +7,10 @@ class VAE(nn.Module):
     def __init__(self, input_dim=256, hidden_dim=64, latent_dim=16):
         super(VAE, self).__init__()
         self.fc1 = nn.Linear(input_dim, hidden_dim)
-        self.fc21 = nn.Linear(hidden_dim, latent_dim)  # 均值
-        self.fc22 = nn.Linear(hidden_dim, latent_dim)  # 对数方差
+        self.fc21 = nn.Linear(hidden_dim, latent_dim)  
+        self.fc22 = nn.Linear(hidden_dim, latent_dim)  
         self.fc3 = nn.Linear(latent_dim, hidden_dim)
         self.fc4 = nn.Linear(hidden_dim, input_dim)
-        # 批归一化，增强训练稳定性
         self.bn1 = nn.BatchNorm1d(hidden_dim)
         self.bn3 = nn.BatchNorm1d(hidden_dim)
 
@@ -21,31 +20,30 @@ class VAE(nn.Module):
 
     def reparameterize(self, mu, logvar):
         std = torch.exp(0.5 * logvar)
-        eps = torch.randn_like(std)  # 随机噪声采样
+        eps = torch.randn_like(std)  
         return mu + eps * std
 
     def decode(self, z):
         h3 = F.relu(self.bn3(self.fc3(z)))
-        return self.fc4(h3)  # 不需要sigmoid，保持输出与输入相同的形状
+        return self.fc4(h3)  
 
     def forward(self, x):
-        x = x.view(x.size(0), -1)  # 确保input_dim与x的展平后的形状一致
+        x = x.view(x.size(0), -1)  
         mu, logvar = self.encode(x)
         z = self.reparameterize(mu, logvar)
         recon_x = self.decode(z)
-        return recon_x.view_as(x), mu, logvar  # 确保输出形状与输入一致
+        return recon_x.view_as(x), mu, logvar  
 
 class VAE_Loss(nn.Module):
     def __init__(self,max_kl_weight=1.0, scale_factor=0.99):
         super(VAE_Loss, self).__init__()
         self.mse_loss = nn.MSELoss()
-        # 注意：KLD损失可能需要根据你的需求进行调整
-        self.kl_weight = 1e-4  # 初始较小的 KL 权重
+        self.kl_weight = 1e-4  
         self.max_kl_weight = max_kl_weight
         self.scale_factor = scale_factor
 
     def forward(self, recon_x, x, mu, logvar):
-        BCE = self.mse_loss(recon_x, x.view_as(recon_x))  # 确保x与recon_x形状一致
+        BCE = self.mse_loss(recon_x, x.view_as(recon_x))  
         KLD = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
         self.kl_weight = min(self.max_kl_weight, self.kl_weight / self.scale_factor)
         return BCE + self.kl_weight * KLD
@@ -128,12 +126,12 @@ class Block(nn.Module):
         self.drop = nn.Dropout(0.)
 
     def forward(self, x):
-        x = self.eca1(self.norm1(x))  # 在Norm层之前应用ECA层
+        x = self.eca1(self.norm1(x))  
         x = x + self.drop(self.attn(x))
-        x = self.eca2(x)  # 在Attn层之后应用ECA层
+        x = self.eca2(x)  
         x = self.norm2(x)
         x = x + self.drop(self.mlp(x))
-        x = self.eca3(x)  # 在MLP层之后应用ECA层
+        x = self.eca3(x)  
         return x
 def absolute_position_encoding(seq_len, embed_dim):
     """
@@ -173,10 +171,8 @@ class stVAT(torch.nn.Module):
         b, _, h, w = x.shape
         x_flat = x.view(b, -1)
         input_dim = x_flat.shape[1]
-        # 根据当前输入维度动态调整VAE模型
         if input_dim != self.vae.fc1.in_features:
             self.vae = VAE(input_dim=input_dim).to(device)
-        # 确保 x_flat 的形状与 input_dim 匹配
         recon_x, mu, logvar = self.vae(x)
         vae_loss = self.vae_loss(recon_x, x, mu, logvar)
 
@@ -185,7 +181,6 @@ class stVAT(torch.nn.Module):
         x = self.patch_embed(x)
         x = self.eca_layer(x)
         x = self.pos_drop(x + pos)
-        # 假设self.blocks是处理特征图的，处理后的维度不变
         x = self.blocks(x)
         x = x.reshape(b, -1, int(self.embed_dim // 4), 4).transpose(1, 3).reshape(b, 4, int(self.embed_dim // 4),
                                                                                   int(h / self.patch_size),
