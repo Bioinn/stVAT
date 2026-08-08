@@ -38,7 +38,6 @@ pip install setuptools==58.2.0
 python setup.py build
 python setup.py install
 ```
-***
 This completes the environment preparation.
 ***
 ## Analysis of melanoma spatial transcriptome data based on stVAT algorithm
