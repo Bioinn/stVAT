@@ -8,8 +8,8 @@
 1.安装Conda/Miniconda环境,教程可参考：[https://zhuanlan.zhihu.com/p/1978239735307708129](https://zhuanlan.zhihu.com/p/1978239735307708129)
 2.开始栏输入`cmd`进入命令行界面，以此分别输入以下两行命令创建并激活PROST环境：
 ```python
-conda create -n PROST_ENV python=3.7
-conda activate PROST_ENV
+conda create -n stVAT python=3.10
+conda activate stVAT
 ```
 3.在`PROST_ENV`里创建R环境，依次输入以下命令
 ```python
@@ -38,7 +38,7 @@ python setup.py install
 ## 基于PROST的人类大脑背外侧前额叶皮层(DLPFC) 10x Genomics Visium 空间转录组数据分析
 DLPFC 是神经科学研究中的经典样本,因为这个脑区具有明显的分层结构(大脑皮层有6层细胞组织),非常适合用来验证空间聚类算法能否正确识别出这些解剖学上已知的功能分区。
 
-现在可以打开`test`文件夹下的`DLPFC数据集分析.ipynb`，按照注释的步骤逐个运行代码，完成基于PROST的人类大脑背外侧前额叶皮层(DLPFC) 10x Genomics Visium 空间转录组数据分析。
+现在可以打开`test`文件夹下的`testMEL.py`，按照注释的步骤逐个运行代码，完成基于PROST的人类大脑背外侧前额叶皮层(DLPFC) 10x Genomics Visium 空间转录组数据分析。
 
 通过这个示例，你将能够了解如何使用PROST框架来识别空间变异基因和检测空间域，从而更好地理解组织结构和功能分区。
 
