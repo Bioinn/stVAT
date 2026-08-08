@@ -21,12 +21,12 @@ Practice interpolation mapping. At the same time, the transfer learning strategy
 conda create -n stVAT python=3.10
 conda activate stVAT
 ```
-3.Create an R environment in`PROST_ENV` and enter the following commands in turn
+3.Create an R environment in`stVAT` and enter the following commands in turn
 ```python
 conda install -c conda-forge r-base
 conda install -c conda-forge r-mclust=5.4.10
 ```
-4.安装相关依赖包 cmd切换路径到解压后的~PROST-master`根目录文下，以下做Windows/Linux系统区分
+4.Install the relevant dependency package cmd switching path to the unzipped ~ stVAT-master ' root directory text, the following is Windows / Linux system distinction
 If the Windows system input the following commands：
 ```python
 pip install -r requirements_win.txt
