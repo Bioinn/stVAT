@@ -47,3 +47,8 @@ Melanoma is the most classical standard test data set in the field of spatial tr
 Now you can open`testMEL.py`under the`stVAT_master`folder and run the code one by one according to the annotation steps to complete the data analysis of melanoma spatial transcriptome.
 
 Through this example, we can demonstrate the complete operation process of the stVAT algorithm on the spatial transcriptome data of solid tumors. The verification algorithm can improve the data quality and improve the accuracy of tumor microenvironment analysis.As a model, the same process can be applied to analyze the spatial transcriptome data of breast cancer, invasive ductal carcinoma and other tumors.
+## Datasets
+- [STOMICS DataBase - PDAC](https://db.cngb.org/stomics/search?query=PDAC)  
+- [Spatial Research - DOI: 10.1158/0008-5472.CAN-18-0747](https://www.spatialresearch.org/resources-published-datasets/doi-10-1158-0008-5472-can-18-0747/)  
+- [10x Genomics - Human Breast Cancer (Block A Section 1)](https://www.10xgenomics.com/datasets/human-breast-cancer-block-a-section-1-1-standard-1-1-0)  
+- [10x Genomics Support - V1 Human Invasive Ductal Carcinoma](https://support.10xgenomics.com/spatial-gene-expression/datasets/1.2.0/V1_Human_Invasive_Ductal_Carcinoma)  
