@@ -45,11 +45,9 @@ python setup.py install
 ***
 This completes the environment preparation.
 ***
-## 基于PROST的人类大脑背外侧前额叶皮层(DLPFC) 10x Genomics Visium 空间转录组数据分析
-DLPFC 是神经科学研究中的经典样本,因为这个脑区具有明显的分层结构(大脑皮层有6层细胞组织),非常适合用来验证空间聚类算法能否正确识别出这些解剖学上已知的功能分区。
+## Spatial domain and spatial variable gene recognition and function research based on VAEViT algorithm
+本研究分析三个来自不同组织样本的空间转录组学数据集，涵盖多种生物学背景下基因表达的空间分布情况。
 
-现在可以打开`test`文件夹下的`testMEL.py`，按照注释的步骤逐个运行代码，完成基于PROST的人类大脑背外侧前额叶皮层(DLPFC) 10x Genomics Visium 空间转录组数据分析。
+现在可以打开`stVAT_master`文件夹下的`testMEL.py`，按照注释的步骤逐个运行代码，完成“基于VAEViT算法的空间域与空间可变基因识别及功能研究”数据分析。
 
-通过这个示例，你将能够了解如何使用PROST框架来识别空间变异基因和检测空间域，从而更好地理解组织结构和功能分区。
-
-另外若想尝试其他数据集，可参考官方文档：[https://prost-doc.readthedocs.io/en/latest/index.html](https://prost-doc.readthedocs.io/en/latest/index.html)
+通过这个示例，能够说明本研究算法在空间转录组数据补全、空间域界定、空间可变基因识别及基因功能阐释任务中的效果优于现有主流技术。
