@@ -32,7 +32,7 @@ If the Linux system input the following commands：
 ```python
 pip install -r requirements.txt
 ```
-5.Install the PROST project package, and three lines of commands are executed in turn：
+5.Install the stVAT project package, and three lines of commands are executed in turn：
 ```python
 pip install setuptools==58.2.0
 python setup.py build
